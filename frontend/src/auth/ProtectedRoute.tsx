@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
+import { hasAdminRole } from "./roles";
 import { useAuth } from "./useAuth";
 
 /**
@@ -23,7 +24,7 @@ export function AdminRoute({ children }: { children: ReactNode }) {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  if (!user?.roles.includes("ADMIN")) {
+  if (!hasAdminRole(user?.roles)) {
     return <Navigate to="/forbidden" replace />;
   }
   return <>{children}</>;

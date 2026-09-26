@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { hasAdminRole } from "../../auth/roles";
 import { useAuth } from "../../auth/useAuth";
 
 export function NavBar() {
   const { user, logout } = useAuth();
-  const isAdmin = user?.roles.includes("ADMIN") ?? false;
+  const isAdmin = hasAdminRole(user?.roles);
 
   return (
     <nav className="navbar">
