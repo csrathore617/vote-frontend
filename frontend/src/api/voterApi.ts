@@ -5,3 +5,8 @@ export async function searchVoters(params: VoterSearchParams): Promise<PagedResp
   const response = await client.get<PagedResponse<VoterResponse>>("/api/voters/search", { params });
   return response.data;
 }
+
+export async function updateVotingStatus(id: number, voted: boolean): Promise<VoterResponse> {
+  const response = await client.patch<VoterResponse>(`/api/voters/${id}/voting-status`, { voted });
+  return response.data;
+}

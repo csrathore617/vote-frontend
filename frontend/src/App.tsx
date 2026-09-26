@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AdminRoute, ProtectedRoute } from "./auth/ProtectedRoute";
 import { AdminAccessGrantsPage } from "./pages/admin/AdminAccessGrantsPage";
+import { AdminBlockBuilderPage } from "./pages/admin/AdminBlockBuilderPage";
 import { AdminDataBlocksPage } from "./pages/admin/AdminDataBlocksPage";
 import { AdminLayout } from "./pages/admin/AdminLayout";
 import { AdminUsersPage } from "./pages/admin/AdminUsersPage";
@@ -32,6 +33,7 @@ export function App() {
         <Route index element={<Navigate to="users" replace />} />
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="data-blocks" element={<AdminDataBlocksPage />} />
+        <Route path="block-builder" element={<AdminBlockBuilderPage />} />
         <Route path="access-grants" element={<AdminAccessGrantsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/search" replace />} />

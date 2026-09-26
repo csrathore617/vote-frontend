@@ -49,24 +49,26 @@ export function AdminDataBlocksPage() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Display name</th>
-              <th>Active</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blocks.map((block) => (
-              <tr key={block.id}>
-                <td>{block.id}</td>
-                <td>{block.displayName}</td>
-                <td>{block.active ? "Yes" : "No"}</td>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Display name</th>
+                <th>Active</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {blocks.map((block) => (
+                <tr key={block.id}>
+                  <td>{block.id}</td>
+                  <td>{block.displayName}</td>
+                  <td>{block.active ? "Yes" : "No"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <h3>Create data block</h3>

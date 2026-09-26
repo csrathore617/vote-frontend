@@ -7,7 +7,7 @@ interface Props {
   submitting: boolean;
 }
 
-const GENDER_OPTIONS = [
+export const GENDER_OPTIONS = [
   { value: "", label: "Any" },
   { value: "पुरुष", label: "पुरुष (Male)" },
   { value: "स्त्री", label: "स्त्री (Female)" },

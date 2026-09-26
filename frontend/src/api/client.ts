@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "https://vote-backend-gwj3.onrender.com",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 // The token lives only in AuthContext's React state (never localStorage --

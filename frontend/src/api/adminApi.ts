@@ -1,4 +1,11 @@
-import type { AccessGrant, AdminUser, DataBlock } from "../types/admin";
+import type {
+  AccessGrant,
+  AdminUser,
+  DataBlock,
+  MasterVoter,
+  MasterVoterFilter,
+  PopulationResult,
+} from "../types/admin";
 import type { PagedResponse } from "../types/voter";
 import client from "./client";
 
@@ -60,4 +67,36 @@ export async function grantAccess(userId: number, dataBlockId: string): Promise<
 
 export async function revokeAccess(grantId: number): Promise<void> {
   await client.delete(`/api/admin/access-grants/${grantId}`);
+}
+
+export async function searchMasterVoters(
+  params: MasterVoterFilter & { page?: number; size?: number },
+): Promise<PagedResponse<MasterVoter>> {
+  const response = await client.get<PagedResponse<MasterVoter>>("/api/admin/master-voters", { params });
+  return response.data;
+}
+
+/** {@code dryRun} previews the counts without copying anything. */
+export async function populateBlockFromFilter(
+  blockId: string,
+  filter: MasterVoterFilter,
+  dryRun: boolean,
+): Promise<PopulationResult> {
+  const response = await client.post<PopulationResult>(`/api/admin/data-blocks/${blockId}/voters/from-filter`, {
+    filter,
+    dryRun,
+  });
+  return response.data;
+}
+
+export async function populateBlockFromIds(
+  blockId: string,
+  masterVoterIds: number[],
+  dryRun: boolean,
+): Promise<PopulationResult> {
+  const response = await client.post<PopulationResult>(`/api/admin/data-blocks/${blockId}/voters/from-ids`, {
+    masterVoterIds,
+    dryRun,
+  });
+  return response.data;
 }

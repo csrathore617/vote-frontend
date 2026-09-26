@@ -8,6 +8,7 @@ export function AdminLayout() {
       <nav className="admin-tabs">
         <NavLink to="/admin/users">Users</NavLink>
         <NavLink to="/admin/data-blocks">Data Blocks</NavLink>
+        <NavLink to="/admin/block-builder">Block Builder</NavLink>
         <NavLink to="/admin/access-grants">Access Grants</NavLink>
       </nav>
       <main>

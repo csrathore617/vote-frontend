@@ -26,6 +26,7 @@ export interface VoterResponse {
   age: number | null;
   gender: string | null;
   sourcePage: number | null;
+  voted: boolean | null;
 }
 
 export interface PagedResponse<T> {

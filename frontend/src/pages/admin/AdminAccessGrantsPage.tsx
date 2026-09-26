@@ -1,11 +1,12 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { grantAccess, listAccessGrants, revokeAccess } from "../../api/adminApi";
+import { grantAccess, listAccessGrants, listUsers, revokeAccess } from "../../api/adminApi";
 import { ErrorBanner } from "../../components/common/ErrorBanner";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
-import type { AccessGrant } from "../../types/admin";
+import type { AccessGrant, AdminUser } from "../../types/admin";
 
 export function AdminAccessGrantsPage() {
   const [grants, setGrants] = useState<AccessGrant[]>([]);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState("");
@@ -14,8 +15,9 @@ export function AdminAccessGrantsPage() {
   async function refresh() {
     setLoading(true);
     try {
-      const page = await listAccessGrants({});
-      setGrants(page.content);
+      const [grantsPage, usersPage] = await Promise.all([listAccessGrants({}), listUsers(0, 200)]);
+      setGrants(grantsPage.content);
+      setUsers(usersPage.content);
       setError(null);
     } catch {
       setError("Could not load access grants.");
@@ -60,33 +62,44 @@ export function AdminAccessGrantsPage() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Data block</th>
-              <th>Granted at</th>
-              <th>Status</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {grants.map((grant) => (
-              <tr key={grant.id}>
-                <td>{grant.userEmail}</td>
-                <td>{grant.dataBlockId}</td>
-                <td>{new Date(grant.grantedAt).toLocaleString()}</td>
-                <td>{grant.revokedAt ? "Revoked" : "Active"}</td>
-                <td>{!grant.revokedAt && <button type="button" onClick={() => handleRevoke(grant.id)}>Revoke</button>}</td>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Data block</th>
+                <th>Granted at</th>
+                <th>Status</th>
+                <th />
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {grants.map((grant) => (
+                <tr key={grant.id}>
+                  <td>{grant.userEmail}</td>
+                  <td>{grant.dataBlockId}</td>
+                  <td>{new Date(grant.grantedAt).toLocaleString()}</td>
+                  <td>{grant.revokedAt ? "Revoked" : "Active"}</td>
+                  <td>{!grant.revokedAt && <button type="button" onClick={() => handleRevoke(grant.id)}>Revoke</button>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <h3>Grant access</h3>
       <form onSubmit={handleGrant} className="admin-create-form">
-        <input placeholder="User ID" type="number" value={userId} onChange={(e) => setUserId(e.target.value)} required />
+        <select value={userId} onChange={(e) => setUserId(e.target.value)} required>
+          <option value="" disabled>
+            Select a user
+          </option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.email} ({user.fullName})
+            </option>
+          ))}
+        </select>
         <input
           placeholder="Data block ID"
           value={dataBlockId}

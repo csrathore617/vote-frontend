@@ -50,26 +50,28 @@ export function AdminUsersPage() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Roles</th>
-              <th>Enabled</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.email}</td>
-                <td>{user.fullName}</td>
-                <td>{user.roles.join(", ")}</td>
-                <td>{user.enabled ? "Yes" : "No"}</td>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Roles</th>
+                <th>Enabled</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.email}</td>
+                  <td>{user.fullName}</td>
+                  <td>{user.roles.join(", ")}</td>
+                  <td>{user.enabled ? "Yes" : "No"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <h3>Create user</h3>
